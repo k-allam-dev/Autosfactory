@@ -49,7 +49,7 @@ What I found by reading the code of the fork at `Documents\Github\orca`, based o
 
 **What this means for the plan**
 - Step 8 (safe launch): mostly a settings default plus our policy files feeding Orca's permission modes and ask rules. The three-button prompt for Claude has a real base to extend: the suggested permission updates already carry "allow for session" and "allow always" style choices (to be confirmed by running it).
-- Step 12 and the Antigravity part of ticket #6: the finding that Antigravity has no live approval was about headless mode. Orca's ACP route has live approval. If it works with the Antigravity version you have, we can offer Antigravity the same prompts as Claude, and the fixed command list becomes a fallback. This must be tested in Step 4.
+- Step 12 and the Antigravity part of ticket #6: **corrected after research tickets #29 and #30.** Orca's ACP route has live approval, but it runs a separate Google server (not the `agy` CLI) and has **no Windows build at this commit** (the install throws "not available on win32 x64"). So on a Windows machine the fixed command list from ticket #6 stays the base. ACP is an upside only on macOS or Linux. Details: `docs/autosfactory/acp-research.md` in the fork.
 
 ## 4. Things Orca already has that Phases 2 and 3 need
 
@@ -64,7 +64,7 @@ Steps 9 and 10 should start from these. The mandatory review gate (a ticket cann
 
 | Assumed in ticket #9 | What the code shows |
 |---|---|
-| Orca runs agents in terminals, so structured events and permission callbacks need extra work | Claude runs on the Agent SDK with live prompts, and Antigravity runs over ACP with live prompts. Events come from hooks. |
+| Orca runs agents in terminals, so structured events and permission callbacks need extra work | Claude runs on the Agent SDK with live prompts. Antigravity runs over ACP with live prompts **on macOS and Linux only; no Windows build at this commit** (see `acp-research.md`). Events come from hooks. |
 | The Jira support is a link drawer | It is a full client with search by raw JQL, keychain storage, and write support. |
 | Skip-permissions is built into launching | It is a default in settings. |
 | The agent dashboard could be extended into our board | Its cards are agent panes with four buckets. Our board needs its own ticket-based data. |
