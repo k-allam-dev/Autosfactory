@@ -9,13 +9,18 @@ The approach, decided in planning ticket 9: fork Orca (open source, MIT license)
 Two later decisions are built into this order:
 
 - **No skip-permissions, and isolation per ticket.** Agents run with a real permission policy (step 8) *and* inside an isolated environment per ticket (step 8a), because a rule list alone does not confine an agent to a folder.
+- **Scope: Phases 1 and 2 first** (2026-10-27). Phases 3 and 4 stay in the plan and start later.
+- **Windows only.** No move to macOS, so Orca's ACP route is not a base; the fixed command list is. WSL2 may change this (step 8a).
+- **No data leaves the PC.** Telemetry is turned off (step 3a, [#32](https://github.com/k-allam-dev/orca/issues/32)), and outbound traffic is listed.
+- **Stop at 95% usage.** The runner stops all agents at 95% of the usage limit (step 9).
 - **Tests before building.** Step 4 and the research steps come before the parts that depend on them. If Flash cannot do the implementation, Antigravity's allow rules do not work, or the isolated environment is not workable, it is better to find out first.
 
 ## Phase 0: Learn Orca and test the risky assumptions (no feature code) ([#10](https://github.com/k-allam-dev/orca/issues/10))
 
-1. **Clone and run Orca** ([#15](https://github.com/k-allam-dev/orca/issues/15)). Get it running and launch Claude Code and Antigravity inside it. *Blocks everything.* *Status: App runs; waiting for the agent and Jira tests.*
+1. **Clone and run Orca** ([#15](https://github.com/k-allam-dev/orca/issues/15)). Get it running and launch Claude Code and Antigravity inside it. *Blocks everything.* *Status: Done. App, Jira, Claude Code and Antigravity all work (agents still run with the skip-permissions flag).*
 2. **Read Orca's code** ([#16](https://github.com/k-allam-dev/orca/issues/16)). Write notes on how the Jira drawer, the agent dashboard, and agent launching and status tracking work, and where each can be extended. *Needs 1.* *Status: Notes written (`orca-notes.md`).*
 3. **Set up the fork** ([#17](https://github.com/k-allam-dev/orca/issues/17)). Add an upstream remote. Decide where our code lives (separate modules, as little change to Orca's core as possible) and how often to pull Orca updates. *Needs 1.* *Status: Rules written (`docs/autosfactory/fork-rules.md` in the fork).*
+3a. **Turn telemetry off** ([#32](https://github.com/k-allam-dev/orca/issues/32)). Set the opt-out environment variables and the in-app toggle, then list every host the app contacts. *Status: Not started.*
 4. **Run the early tests by hand** ([#18](https://github.com/k-allam-dev/orca/issues/18)). Measure usage with Claude planning and Gemini Flash implementing on 3 real tickets. Check whether Antigravity's settings-file allow rules work on this machine. Check whether the Jira token works better through board tools or direct calls. If Flash fails, the implementer switches to Claude, which changes steps 11 and 12. *Needs 1.* *Status: Not started.*
 4a. **Research Antigravity's ACP route** ([#29](https://github.com/k-allam-dev/orca/issues/29)). Find out whether Orca's ACP route gives Antigravity live permission prompts. Result: no Windows build at this commit, so on this PC the fixed command list stays the base. *Status: Read-only part done; needs a real run on macOS or Linux (or inside WSL).*
 4b. **Research the exact details of each permission prompt** ([#30](https://github.com/k-allam-dev/orca/issues/30)). What each Claude and Antigravity prompt contains and what each answer stores. *Status: Read-only part done; needs a real approve and deny run.*
